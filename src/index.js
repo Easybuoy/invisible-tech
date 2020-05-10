@@ -1,7 +1,12 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const { REACT_APP_API_KEY } = process.env;
+const { REACT_APP_API_KEY, TEST_API_KEY, NODE_ENV } = process.env;
+
+let apiKey = REACT_APP_API_KEY || "5ecc8079d7bc0117adf4decfbc5771cf";
+if (NODE_ENV === "testing") {
+  apiKey = TEST_API_KEY;
+}
 
 const getUrlFromLocation = (locations) => {
   let locationUrls = [];
@@ -9,12 +14,12 @@ const getUrlFromLocation = (locations) => {
     if (isNaN(location) === false) {
       locationUrls.push({
         name: location,
-        url: `https://api.openweathermap.org/data/2.5/weather?zip=${location}&appid=${REACT_APP_API_KEY}&units=metric`,
+        url: `https://api.openweathermap.org/data/2.5/weather?zip=${location}&appid=${apiKey}&units=metric`,
       });
     } else {
       locationUrls.push({
         name: location,
-        url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${REACT_APP_API_KEY}&units=metric`,
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`,
       });
     }
   });
@@ -27,7 +32,8 @@ const getTimeFromTimeStamp = (timestamp) => {
   return time;
 };
 
-const getUserLocationDetails = (locations) => {
+const getUserLocationDetails = () => {
+  const locations = [" New York", 10005, "Tokyo", "São Paulo", "Pluto"];
   const locationUrls = getUrlFromLocation(locations);
 
   locationUrls.forEach((location) => {
@@ -61,10 +67,10 @@ const getUserLocationDetails = (locations) => {
   return "loading location details... \n";
 };
 
-console.log(
-  getUserLocationDetails([" New York", 10005, "Tokyo", "São Paulo", "Pluto"])
-);
+console.log(getUserLocationDetails());
 
 module.exports = {
   getUrlFromLocation,
+  getTimeFromTimeStamp,
+  getUserLocationDetails,
 };
