@@ -23,6 +23,7 @@
     "mocha": "^7.1.2"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0"
   }
 }
