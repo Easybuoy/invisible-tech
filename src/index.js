@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const { REACT_APP_API_KEY, TEST_API_KEY, NODE_ENV } = process.env;
 
-let apiKey = REACT_APP_API_KEY;
+let apiKey = REACT_APP_API_KEY || "5ecc8079d7bc0117adf4decfbc5771cf";
 if (NODE_ENV === "testing") {
   apiKey = TEST_API_KEY;
 }
@@ -67,7 +67,7 @@ const getUserLocationDetails = () => {
   return "loading location details... \n";
 };
 
-// console.log(getUserLocationDetails());
+console.log(getUserLocationDetails());
 
 module.exports = {
   getUrlFromLocation,
