@@ -21,6 +21,12 @@ const getUrlFromLocation = (locations) => {
   return locationUrls;
 };
 
+const getTimeFromTimeStamp = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  const time = date.toISOString().match(/(\d{2}:\d{2})/)[1];
+  return time;
+};
+
 const getUserLocationDetails = (locations) => {
   const locationUrls = getUrlFromLocation(locations);
 
@@ -28,7 +34,6 @@ const getUserLocationDetails = (locations) => {
     axios
       .get(location.url)
       .then((res) => {
-        // console.log("res", res.data);
         const {
           name,
           sys: { country, sunrise, sunset },
@@ -39,24 +44,19 @@ const getUserLocationDetails = (locations) => {
           visibility,
         } = res.data;
 
-        const date = new Date(dt * 1000);
-        const time = date.toISOString().match(/(\d{2}:\d{2})/)[1];
-
-        const sunriseDate = new Date(sunrise * 1000);
-        const sunriseTime = sunriseDate.toISOString().match(/(\d{2}:\d{2})/)[1];
-
-        const sunsetDate = new Date(sunset * 1000);
-        const sunsetTime = sunsetDate.toISOString().match(/(\d{2}:\d{2})/)[1];
+        const time = getTimeFromTimeStamp(dt);
+        const sunriseTime = getTimeFromTimeStamp(sunrise);
+        const sunsetTime = getTimeFromTimeStamp(sunset);
 
         console.log("\n");
         console.log(
           `The current temperature for ${name}/${country} as of ${time} is ${temp}°C with a ${weather[0].description} weather and humidity of ${humidity}%. The wind speed is ${speed}mph with visibility of ${visibility}metres, sunrise is at ${sunriseTime} whilst sunset is at ${sunsetTime}`
         );
-        console.log("\n");
       })
-      .catch((err) =>
-        console.log(`Unable to get location details for ${location.name}`)
-      );
+      .catch(() => {
+        console.log("\n");
+        console.log(`Unable to get location details for ${location.name}`);
+      });
   });
   return "loading location details... \n";
 };
