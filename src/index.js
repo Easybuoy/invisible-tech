@@ -1,21 +1,43 @@
-require('dotenv').config();
+const axios = require("axios");
+require("dotenv").config();
 
-const {REACT_APP_API_KEY} = process.env;
+const { REACT_APP_API_KEY } = process.env;
 
-console.log(REACT_APP_API_KEY);
+const getUrlFromLocation = (locations) => {
+  let locationUrls = [];
+  locations.forEach((location) => {
+    if (isNaN(location) === false) {
+      locationUrls.push({
+        name: location,
+        url: `https://api.openweathermap.org/data/2.5/weather?zip=${location}&appid=${REACT_APP_API_KEY}`,
+      });
+    } else {
+      locationUrls.push({
+        name: location,
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${REACT_APP_API_KEY}`,
+      });
+    }
+  });
+  return locationUrls;
+};
 
 const getUserLocationDetails = (locations) => {
-    const locationUrls = getUrlFromLocation(locations);
-    console.log(locationUrls)
-    // Promise.all(locations)
-}
+  const locationUrls = getUrlFromLocation(locations);
+  console.log(locationUrls);
+  locationUrls.forEach((location) => {
+    axios
+      .get(location.url)
+      .then((res) => console.log("res", res.data))
+      .catch((err) =>
+        console.log(`Unable to get location details for ${location.name}`)
+      );
+  });
+};
 
- const getUrlFromLocation = (locations) => {
-    l
-}
-
-console.log(getUserLocationDetails([{location_name: 'New York', postal_code: 10005}]))
+console.log(
+  getUserLocationDetails([" New York", 10005, "Tokyo", "São Paulo", "Pluto"])
+);
 
 module.exports = {
-    getUrlFromLocation
-}
+  getUrlFromLocation,
+};
