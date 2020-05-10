@@ -7,6 +7,7 @@ let apiKey = REACT_APP_API_KEY;
 if (NODE_ENV === "testing") {
   apiKey = TEST_API_KEY;
 }
+
 const getUrlFromLocation = (locations) => {
   let locationUrls = [];
   locations.forEach((location) => {
