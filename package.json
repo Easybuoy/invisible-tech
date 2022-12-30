@@ -20,7 +20,7 @@
   "homepage": "https://github.com/Easybuoy/invisible-tech#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.2"
+    "mocha": "^10.2.0"
   },
   "dependencies": {
     "axios": "^0.19.2",
